@@ -1,0 +1,6 @@
+{
+  "total_sessions": 40,
+  "validated_for_training": 34,
+  "quarantined": 6,
+  "delivered_data_accuracy": "100% of delivered rows passed all gates"
+}

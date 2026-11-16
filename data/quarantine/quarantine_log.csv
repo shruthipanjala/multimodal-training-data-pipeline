@@ -1,0 +1,7 @@
+session_folder,session_id,reason
+S005,S005,empty_or_corrupt_video
+S011,S011,low_frame_rate:10fps
+S017,S017,missing_metadata:task
+S023,S023,calibration_device_mismatch
+S029,S029,insufficient_motion_data:0rows
+S034,S001,duplicate_session_id
