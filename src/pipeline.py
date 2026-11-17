@@ -46,6 +46,7 @@ def quality_gates(session):
     if len(motion) < 100:
         reasons.append(f"insufficient_motion_data:{len(motion)}rows")
     return reasons
+
 def transform(session):
     meta = session["metadata"]
     video = session["video"]
@@ -63,7 +64,7 @@ def transform(session):
             "mean_movement": round(sum(magnitudes) / len(magnitudes), 3),
             "quality_status": "validated"}
 
-if __name__ == "__main__":
+def main():
     CLEAN.mkdir(parents=True, exist_ok=True)
     QUAR.mkdir(parents=True, exist_ok=True)
     sessions = ingest()
@@ -96,20 +97,6 @@ if __name__ == "__main__":
     (CLEAN / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print(f"Training dataset written: {len(clean_rows)} rows")
     print(f"Quarantine log written: {len(quarantine_rows)} rows")
-    sessions = ingest()
-    seen_ids = set()
-    passed, quarantined = [], []
-    for s in sessions:
-        sid = s["metadata"].get("session_id", s["folder"])
-        reasons = quality_gates(s)
-        if sid in seen_ids:
-            reasons.append("duplicate_session_id")
-        seen_ids.add(sid)
-        if reasons:
-            quarantined.append((s["folder"], "; ".join(reasons)))
-        else:
-            passed.append(sid)
-    print(f"Passed all gates: {len(passed)}")
-    print(f"Quarantined: {len(quarantined)}")
-    for folder, reason in quarantined:
-        print(f"  {folder} -> {reason}")
+
+if __name__ == "__main__":
+    main()
